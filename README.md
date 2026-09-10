@@ -34,3 +34,7 @@ Tests load the actual meshes and animations without textures and verify all ten 
 ## Assets
 
 Characters and animation clips were supplied by the user. The environment is the original game's artistic interpretation of Bremerton. Surface maps are Poly Haven CC0 assets; credits are in `public/assets/texture-credits.json`. Prebuilt optimized GLBs are included; original archives are not included.
+
+## Music
+
+The user-supplied **Marv Reeves, Hold the Line** loops from the title screen through gameplay. Browsers that block audible autoplay start it on the first tap/key press or the PLAY MUSIC button. The sound button controls both music and effects. Hidden tabs pause the track, returning resumes it, and replay does not restart or duplicate the track.

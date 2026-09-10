@@ -1,11 +1,15 @@
 import {useEffect, useRef, useState, type PointerEvent} from 'react';
 import type {BremertonGame, Hud} from '../lib/game';
 import {registerGameTools} from '../lib/game-tools';
+import {Soundtrack, type MusicStatus} from '../lib/music';
 
 const initialHud:Hud={health:100,stamina:100,kills:0,total:24,district:'Downtown',message:'',dead:false,won:false,paused:false};
 export default function Home(){
  const mount=useRef<HTMLDivElement>(null);
  const game=useRef<BremertonGame|null>(null);
+ const music=useRef<Soundtrack|null>(null);
+ const mutePreference=useRef(false);
+ const [musicStatus,setMusicStatus]=useState<MusicStatus>('loading');
  const stickPointer=useRef<number|null>(null);
  const [status,setStatus]=useState('Preparing Bremerton…');
  const [ready,setReady]=useState(false);
@@ -18,12 +22,16 @@ export default function Home(){
  const start=()=>{if(!game.current?.loaded)return;game.current.start();setPlaying(true);};
  const title=()=>{game.current?.title();setPlaying(false);setRunning(false);setStick({x:0,y:0});};
  useEffect(()=>{
+  const track=new Soundtrack(new URL('music/marv-reeves-hold-the-line.mp3',document.baseURI).href,setMusicStatus);music.current=track;
+  return()=>{track.dispose();music.current=null;};
+ },[]);
+ useEffect(()=>{
   let disposed=false;let removeTools=()=>{};
   import('../lib/game').then(async({BremertonGame})=>{
    if(disposed)return;
    try{
     const g=new BremertonGame(mount.current!,s=>{if(!disposed){setStatus(s);if(s.startsWith('Graphics'))setError(true);}},h=>{if(!disposed)setHud(h);});
-    game.current=g;
+    game.current=g;g.setMuted(mutePreference.current);
     await g.load();
     if(!disposed){setReady(true);setStatus('The waterfront is ready.');removeTools=registerGameTools(g,setPlaying);}
    }catch(e){if(!disposed){setError(true);setStatus('The game could not load. Check your connection and try again.');}console.error(e);}
@@ -47,7 +55,7 @@ export default function Home(){
   <header className="topline">
    <div className="wordmark">MR<span>LAST MAN<br/>IN BREMERTON</span></div>
    <div className="coordinates">BREMERTON, WA <span>47.5673° N · 122.6326° W</span></div>
-   <button className="small-button sound-button" onClick={()=>{setMuted(!muted);game.current?.setMuted(!muted);}} aria-label={muted?'Enable sound':'Mute sound'}>{muted?'SOUND OFF':'SOUND ON'}</button>
+   <button className="small-button sound-button" data-sound-toggle onClick={()=>{const next=!muted&&musicStatus==='playing';mutePreference.current=next;setMuted(next);game.current?.setMuted(next);music.current?.setMuted(next);}} aria-label={muted?'Enable music and sound':musicStatus==='playing'?'Mute music and sound':'Play music'}>{muted?'SOUND OFF':musicStatus==='playing'?'SOUND ON':'PLAY MUSIC'}</button>
    {playing&&<button className="small-button" onClick={()=>game.current?.pause()} aria-label={hud.paused?'Resume game':'Pause game'}>Ⅱ</button>}
   </header>
   {!playing?<section className="start-panel">
