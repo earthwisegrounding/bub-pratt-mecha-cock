@@ -62,6 +62,19 @@ const hurt=createGame();hurt.start();
 for(const z of hurt.zombies)z.root.position.set(70,0,70);
 const attacker=hurt.zombies[0];attacker.root.position.copy(hurt.marv.root.position).add(new T.Vector3(0,0,1));hurt.play(attacker,'scream',true,1.4);attacker.timer=.9;attacker.hitDone=false;
 hurt.tick(.05);assert.equal(hurt.health,87);assert.equal(hurt.marv.current,'hit');assert.equal(hurt.lock,.55);assert.equal(hurt.invulnerable,1.2);
+// Holding Run at exhaustion must walk steadily while stamina recovers.
+for(const touch of [false,true]){
+ const tired=createGame();tired.start();tired.zombies=[];tired.stamina=.5;
+ tired.keys.add('KeyW');if(touch)tired.setRun(true);else tired.keys.add('ShiftLeft');
+ const before=tired.marv.root.position.clone();tired.tick(.05);
+ assert.equal(tired.stamina,0);assert.equal(tired.runExhausted,true);assert.equal(tired.marv.current,'walk');
+ assert(Math.abs(tired.marv.root.position.distanceTo(before)-2.8*.05)<1e-8);
+ for(let frame=0;frame<33;frame++){tired.tick(.05);assert.equal(tired.marv.current,'walk');}
+ assert(tired.stamina>=24);tired.tick(.05);tired.tick(.05);assert.equal(tired.marv.current,'run');
+ // The same recovery applies if an attack or jump spends the last stamina.
+ tired.stamina=0;tired.runExhausted=false;tired.tick(.05);assert.equal(tired.marv.current,'walk');assert(tired.runExhausted);
+ tired.restart();assert.equal(tired.runExhausted,false);assert.equal(tired.stamina,100);
+}
 // Correct camera-relative movement at cardinal and rotated camera angles, for keys and stick.
 g.zombies=[];
 for(const yaw of [0,Math.PI/2,Math.PI,Math.PI*1.5,.71])for(const sign of [-1,1])for(const touch of [false,true]){
