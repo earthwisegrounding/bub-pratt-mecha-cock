@@ -9,7 +9,7 @@
     "dev": "vite --host 127.0.0.1",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview --host 127.0.0.1",
-    "test": "node tests/game.mjs && node tests/music.mjs"
+    "test": "node tests/bremerton.mjs && node tests/music.mjs"
   },
   "dependencies": {
     "@base-ui/react": "1.7.0",

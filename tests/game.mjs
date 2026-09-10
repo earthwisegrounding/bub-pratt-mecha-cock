@@ -5,8 +5,9 @@ import * as T from 'three';
 import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 await fs.mkdir('.test-work',{recursive:true});
-for(const name of ['game','rules']){
+for(const name of ['game','rules','bremerton']){
  let source=await fs.readFile(`lib/${name}.ts`,'utf8');
+ source=source.replace("'./bremerton.ts'","'./bremerton.mjs'");
  source=source.replace("'./rules.ts'","'./rules.mjs'");
  await fs.writeFile(`.test-work/${name}.mjs`,ts.transpileModule(source,{compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.ESNext}}).outputText);
 }
@@ -143,3 +144,4 @@ for(let i=0;i<130;i++)recovery.tick(.05);assert.equal(recovery.health,100);
 recovery.health=0;for(let i=0;i<130;i++)recovery.tick(.05);assert.equal(recovery.health,0);
 recovery.restart();assert.equal(recovery.safeTime,0);assert.equal(recovery.healing,false);
 console.log('PASS: solid bodies, contact/facing/jump damage checks, close pursuit, safe health recovery and reset.');
+export {loadModel, createGame};
