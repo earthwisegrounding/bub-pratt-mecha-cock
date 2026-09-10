@@ -39,3 +39,5 @@ h1{font-family:Impact,'Arial Narrow',sans-serif;font-size:clamp(66px,9vw,138px);
 @media(prefers-reduced-motion:reduce){.health-track div{transition:none}}
 
 @media(max-height:700px) and (max-aspect-ratio:4/5){.mobile-help{display:none}}
+
+.healing-help{font-size:12px;line-height:1.4;color:#c1cdca;margin-top:10px;max-width:370px}.secondary-label.recovery-label{display:block;font-size:11px;letter-spacing:.3px}

@@ -38,3 +38,9 @@ Characters and animation clips were supplied by the user. The environment is the
 ## Music
 
 The user-supplied **Marv Reeves, Hold the Line** loops from the title screen through gameplay. Browsers that block audible autoplay start it on the first tap/key press or the PLAY MUSIC button. The sound button controls both music and effects. Hidden tabs pause the track, returning resumes it, and replay does not restart or duplicate the track.
+
+## Contact combat and recovery
+
+Living characters block each other, including while running or jumping. Zombies approach to body contact before winding up an attack; damage checks contact and facing again when the strike lands. Retreat, jump, or knock them back to evade. Defeated zombies no longer block movement.
+
+Get more than 6 meters from every living zombie for 5 seconds to restore 5 health per second, up to 100. Returning near a zombie resets recovery. The health display shows when healing is active. Recovery works with keyboard and touch controls and stops while paused or dead.

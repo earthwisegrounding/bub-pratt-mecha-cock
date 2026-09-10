@@ -60,7 +60,7 @@ g.title();assert.equal(g.active,false);assert.equal(g.marv.current,'dance1');g.t
 // Keep Marv's supplied hit reaction and original damage/recovery timing.
 const hurt=createGame();hurt.start();
 for(const z of hurt.zombies)z.root.position.set(70,0,70);
-const attacker=hurt.zombies[0];attacker.root.position.copy(hurt.marv.root.position).add(new T.Vector3(0,0,1));hurt.play(attacker,'scream',true,1.4);attacker.timer=.9;attacker.hitDone=false;
+const attacker=hurt.zombies[0];attacker.root.position.copy(hurt.marv.root.position).add(new T.Vector3(0,0,.9));attacker.root.rotation.y=Math.PI;hurt.play(attacker,'scream',true,1.4);attacker.timer=.9;attacker.hitDone=false;
 hurt.tick(.05);assert.equal(hurt.health,87);assert.equal(hurt.marv.current,'hit');assert.equal(hurt.lock,.55);assert.equal(hurt.invulnerable,1.2);
 // Holding Run at exhaustion must walk steadily while stamina recovers.
 for(const touch of [false,true]){
@@ -104,3 +104,42 @@ for(const [w,h] of [[390,844],[375,667],[320,568],[844,390],[1280,800]]){
  console.log(`Title framing ${w}x${h}: X ${minX.toFixed(2)}..${maxX.toFixed(2)}, Y ${minY.toFixed(2)}..${maxY.toFixed(2)}`);
 }
 console.log('PASS: 10 Marv clips; three title dances; no combat dances; damage, victory and replay; keyboard/touch direction; collisions; animated title framing.');
+
+// Solid bodies block large steps, normal movement, and jumps; corpses do not.
+const solid=createGame();solid.start();solid.marv.root.position.set(0,0,0);
+for(const z of solid.zombies)z.root.position.set(70,0,70);
+const blocker=solid.zombies[0];blocker.root.position.set(0,0,2);
+solid.move(solid.marv.root,new T.Vector3(0,0,5));
+assert(solid.marv.root.position.z<=1.100001);assert(solid.marv.root.position.z>1.05);
+solid.marv.root.position.set(0,1,0);solid.elevation=1;
+solid.move(solid.marv.root,new T.Vector3(0,0,5));assert(solid.marv.root.position.z<=1.100001);
+solid.marv.root.position.set(0,0,0);solid.move(blocker.root,new T.Vector3(0,0,-5),.48);assert(blocker.root.position.z>=.899999);
+blocker.dead=true;solid.move(solid.marv.root,new T.Vector3(0,0,5));assert(Math.abs(solid.marv.root.position.z-5)<1e-8);
+// Damage uses contact at impact, facing, and jump height, not the old scream radius.
+function contactCase(distance,yaw=Math.PI,elevation=0){
+ const c=createGame();c.start();for(const z of c.zombies)z.root.position.set(70,0,70);
+ const z=c.zombies[0];z.root.position.copy(c.marv.root.position).add(new T.Vector3(0,0,distance));z.root.rotation.y=yaw;
+ c.elevation=elevation;c.marv.root.position.y=elevation;
+ c.play(z,'scream',true,1.4);z.timer=.9;z.hitDone=false;c.tick(.05);return c;
+}
+assert.equal(contactCase(2.5).health,100);assert.equal(contactCase(1).health,100);
+assert.equal(contactCase(.91).health,87);assert.equal(contactCase(.91,0).health,100);
+assert.equal(contactCase(.91,Math.PI,1).health,100);
+// Zombies close the former gap and reach contact without overlapping the player.
+const chase=createGame();chase.start();for(const z of chase.zombies)z.root.position.set(70,0,70);
+const chaser=chase.zombies[0];chaser.root.position.copy(chase.marv.root.position).add(new T.Vector3(0,0,2.4));
+for(let i=0;i<80;i++)chase.tick(.05);
+const gap=chaser.root.position.distanceTo(chase.marv.root.position);
+assert(gap>=.899999&&gap<=.93);assert(chase.health<100);
+// Healing waits five safe seconds, resets near threats, caps at 100, and cannot revive.
+const recovery=createGame();recovery.start();recovery.health=50;
+for(const z of recovery.zombies)z.root.position.set(70,0,70);
+for(let i=0;i<100;i++)recovery.tick(.05);assert(Math.abs(recovery.health-50)<1e-8);
+for(let i=0;i<20;i++)recovery.tick(.05);assert(Math.abs(recovery.health-55)<1e-8);assert(recovery.healing);
+recovery.paused=true;recovery.tick(1);assert(Math.abs(recovery.health-55)<1e-8);recovery.paused=false;
+recovery.zombies[0].root.position.copy(recovery.marv.root.position).add(new T.Vector3(0,0,5));recovery.tick(.05);assert.equal(recovery.safeTime,0);assert(!recovery.healing);
+recovery.zombies[0].root.position.set(70,0,70);recovery.health=99;
+for(let i=0;i<130;i++)recovery.tick(.05);assert.equal(recovery.health,100);
+recovery.health=0;for(let i=0;i<130;i++)recovery.tick(.05);assert.equal(recovery.health,0);
+recovery.restart();assert.equal(recovery.safeTime,0);assert.equal(recovery.healing,false);
+console.log('PASS: solid bodies, contact/facing/jump damage checks, close pursuit, safe health recovery and reset.');

@@ -3,7 +3,7 @@ import type {BremertonGame, Hud} from '../lib/game';
 import {registerGameTools} from '../lib/game-tools';
 import {Soundtrack, type MusicStatus} from '../lib/music';
 
-const initialHud:Hud={health:100,stamina:100,kills:0,total:24,district:'Downtown',message:'',dead:false,won:false,paused:false};
+const initialHud:Hud={health:100,stamina:100,kills:0,total:24,district:'Downtown',message:'',dead:false,won:false,paused:false,healing:false};
 export default function Home(){
  const mount=useRef<HTMLDivElement>(null);
  const game=useRef<BremertonGame|null>(null);
@@ -64,11 +64,12 @@ export default function Home(){
    <p>His hometown. Their worst mistake.</p>
    <div className="intro">Bremerton has fallen. Marv hasn’t.<br/>Take back the waterfront with nothing but your bare hands.</div>
    <button className="start-button" disabled={!ready||error} onClick={start}>{ready?'TAKE BACK BREMERTON':'LOADING THE WATERFRONT…'}<span aria-hidden="true">↗</span></button>
+   <div className="healing-help">Get 6 meters clear of zombies for 5 seconds to heal.</div>
    <div className="loading-status" role="status">{status}</div>
    <div className="controls-brief"><span><kbd>W A S D</kbd> MOVE</span><span><kbd>J</kbd> PUNCH</span><span><kbd>K</kbd> KICK</span><span><kbd>SPACE</kbd> JUMP</span><span><kbd>SHIFT</kbd> RUN</span><span><kbd>DRAG</kbd> LOOK</span></div>
    <div className="mobile-help">Left thumb to move. Drag the view to look.<br/>Hold RUN while moving. Landscape gives you more room.</div>
   </section>:<>
-   <aside className="vitals"><div className="label-row"><b>MARV REEVES</b><span>{Math.ceil(hud.health)} / 100</span></div><div className="health-track" role="meter" aria-label="Health" aria-valuenow={hud.health} aria-valuemin={0} aria-valuemax={100}><div style={{width:`${hud.health}%`}}/></div><div className="stamina-track" role="meter" aria-label="Stamina" aria-valuenow={Math.round(hud.stamina)} aria-valuemin={0} aria-valuemax={100}><div style={{width:`${hud.stamina}%`}}/></div><span className="secondary-label">GRIT / STAMINA</span></aside>
+   <aside className="vitals"><div className="label-row"><b>MARV REEVES</b><span>{Math.ceil(hud.health)} / 100</span></div><div className="health-track" role="meter" aria-label="Health" aria-valuenow={hud.health} aria-valuemin={0} aria-valuemax={100}><div style={{width:`${hud.health}%`}}/></div><div className="stamina-track" role="meter" aria-label="Stamina" aria-valuenow={Math.round(hud.stamina)} aria-valuemin={0} aria-valuemax={100}><div style={{width:`${hud.stamina}%`}}/></div><span className="secondary-label recovery-label">{hud.healing?'HEALING · +5 GRIT / SEC':hud.health<100?'GET CLEAR · 5 SEC TO HEAL':'GRIT / STAMINA'}</span></aside>
    <aside className="mission"><div className="eyebrow">TAKE BACK THE TOWN</div><strong>{hud.kills}<span> / {hud.total}</span></strong><p>ZOMBIES PUT DOWN</p><div className="district">⌖ {hud.district}</div></aside>
    <div className="toast" role="status">{hud.message}</div><div className="reticle" aria-hidden="true">·</div>
    <div className="desktop-help">WASD move <b>·</b> Shift run <b>·</b> J punch <b>·</b> K kick <b>·</b> Space jump <b>·</b> Drag look <b>·</b> Esc pause</div>
