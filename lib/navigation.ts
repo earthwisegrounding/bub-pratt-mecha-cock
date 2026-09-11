@@ -39,6 +39,7 @@ export class StreetLevel {
     readonly data: LevelData,
     models: GLTF[],
     decorate = true,
+    readonly clearance = 0.75,
   ) {
     this.bounds = [
       Math.min(...data.tiles.map((t) => t.bounds[0])),
@@ -138,7 +139,7 @@ export class StreetLevel {
     for (let i = 0; i < this.walk.length; i++) {
       const p = this.point(i),
         hit = this.surface(p.x, p.z);
-      if (hit && this.clear(p.x, p.z, 0.75)) {
+      if (hit && this.clear(p.x, p.z, this.clearance)) {
         this.walk[i] = 1;
         this.heights[i] = hit.y;
         if (hit.road) this.roadNodes[hit.tile].push(i);
@@ -154,7 +155,7 @@ export class StreetLevel {
         );
       })
       .sort((a, b) => this.point(a).lengthSq() - this.point(b).lengthSq());
-    if (!candidates.length) throw Error("No clear road for Marv");
+    if (!candidates.length) throw Error("No clear road for the player");
     const first = candidates[0];
     this.start.copy(this.point(first));
     const queue = [first];
@@ -166,7 +167,7 @@ export class StreetLevel {
           queue.push(n);
         }
     this.roadNodes = this.roadNodes.map((nodes) => nodes.filter((i) => this.component[i]));
-    // Six well-separated road starts in each rectangle, all reachable from Marv.
+    // Six well-separated road starts in each rectangle, all reachable from the player.
     for (const nodes of this.roadNodes) {
       let choices = nodes.filter((i) => this.point(i).distanceTo(this.start) > 12);
       for (let count = 0; count < 6; count++) {
@@ -242,7 +243,7 @@ export class StreetLevel {
         continue;
       const a = this.point(i),
         b = this.point(n);
-      if (this.canMove((a.x + b.x) / 2, (a.z + b.z) / 2, 0.6, a.x, a.z)) result.push(n);
+      if (this.canMove((a.x + b.x) / 2, (a.z + b.z) / 2, this.clearance, a.x, a.z)) result.push(n);
     }
     return result;
   }

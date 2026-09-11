@@ -1,46 +1,23 @@
-# Marv Reeves: Zombie Killer
+# Bub Pratt: Mecha Cock Rampage
 
-Play: https://earthwisegrounding.github.io/marv-reeves-zombie-killer/
+Browser game on branch `codex/bub-pratt-hilo`. Play locally at http://127.0.0.1:5185 while the server is running. Double-click `Play Bub Pratt.command` to start it again, or run `npm ci` followed by `npm run dev -- --port 5185`.
 
-Marv's mobile web edition, published on GitHub Pages. Gangnam Groove, Hip Hop Dance 1, and Hip Hop Dance 2 cycle on the title screen only. Gameplay has no victory dancing, dance locks, or dance-related invulnerability.
+Bub starts outside **Kukuau Studio**, his home base, in a stylized Hilo bayfront arena. The environment includes tropical storefronts, palm trees, dark coastal rocks, and the ocean. It is an imagined playable layout inspired by Hilo, not a surveyed reconstruction or the studio's exact premises.
 
-The original character and gameplay animations, including the hit reaction, are preserved. The town, 24 enemies, three districts, movement, combat damage, stamina costs, jumps, and corrected left/right controls remain the same.
+The title screen cycles through all seven supplied Bub dances. The supplied **Bub Pratt, Stand Tall** song loops across title and gameplay; the Play Music button handles browsers that block autoplay.
 
-## Controls
+**Ironclaw** is a 4.8-metre killer mecha cock with 700 armor. Punches deal 38 damage; kicks deal 62. Two connected kicks knock it down (punches also accumulate stagger). It plays the supplied falling-down animation, pauses on the ground, then plays Stand Up7 before returning to combat. It cannot attack during either recovery phase. Its final defeat uses the separate Dead animation. Below half armor it moves faster. A red ground ring and message announce its attack windup; damage requires close contact at impact.
 
-Desktop: WASD/arrows move, Shift runs, J punches, K kicks, Space jumps, drag the view to look, Escape pauses.
+Bub's solid body collision, stamina, jumping, and health recovery are retained. Stay more than six metres clear for five seconds to start healing at five health per second. Health cannot regenerate after defeat.
 
-Mobile: left joystick moves, drag the open view to look, tap punch/kick/jump, and hold RUN while moving. Portrait and landscape layouts respect phone safe areas. Pause, victory, and defeat screens can return to the dancing title screen.
+Controls: WASD/arrows move; Shift run; J punch; K kick; Space jump; drag to look; Esc pause. Phones have the movement stick, camera drag, and action buttons. The minimap marks Kukuau Studio in turquoise and Ironclaw in orange.
 
-## Build
+## Validation
 
-Requires Node 22.13 or newer. GitHub Actions uses Node 24.
+- `npm test`: real Bub and Ironclaw meshes/clips, seven title dances, five viewport sizes, collision/navigation, movement, contact damage and jump dodge, knockdown/get-up, victory/replay, health recovery, and audio lifecycle tests.
+- `npm run build`: TypeScript validation and static output in `dist/`.
+- `tests/visual.html`: local development-only animation inspection page. Not included in the production build.
 
-```sh
-npm ci
-npm run dev
-npm test
-npm run build
-```
+The source ZIPs were processed using `tools/process-bub.py` with Blender. This combines animations per character, removes horizontal root travel, and reduces textures/geometry for browsers. All 14 Bub clips and seven Ironclaw clips are preserved in the two bundled GLBs (about 4.8 MB combined). Original archives and music in Downloads are unchanged.
 
-The workflow tests and builds the game, then publishes `dist` to GitHub Pages. All asset paths support the repository subdirectory. No server or Android app is required.
-
-## Mobile improvements and validation
-
-Reduced zombie geometry and textures, capped mobile pixel density, disabled mobile shadows/antialiasing, conservative mesh culling, and less frequent distant animation updates reduce rendering work without changing the gameplay simulation. Pointer capture supports simultaneous movement, looking, and attacks. Hidden tabs suspend rendering and pause active gameplay.
-
-Tests load the actual meshes and animations without textures and verify all ten Marv clips, three title dances, combat without dancing, damage/replay/victory, keyboard and touch direction, collisions, and animated title framing across phone and desktop sizes. Builds include strict TypeScript checking. Physical-device frame rates and browser visual QA have not been measured. Optional WebMCP screen controls are feature-detected but have not been verified in a supported browser runtime.
-
-## Assets
-
-Characters and animation clips were supplied by the user. The environment is the original game's artistic interpretation of Bremerton. Surface maps are Poly Haven CC0 assets; credits are in `public/assets/texture-credits.json`. Prebuilt optimized GLBs are included; original archives are not included.
-
-## Music
-
-The user-supplied **Marv Reeves, Hold the Line** loops from the title screen through gameplay. Browsers that block audible autoplay start it on the first tap/key press or the PLAY MUSIC button. The sound button controls both music and effects. Hidden tabs pause the track, returning resumes it, and replay does not restart or duplicate the track.
-
-## Contact combat and recovery
-
-Living characters block each other, including while running or jumping. Zombies approach to body contact before winding up an attack; damage checks contact and facing again when the strike lands. Retreat, jump, or knock them back to evade. Defeated zombies no longer block movement.
-
-Get more than 6 meters from every living zombie for 5 seconds to restore 5 health per second, up to 100. Returning near a zombie resets recovery. The health display shows when healing is active. Recovery works with keyboard and touch controls and stops while paused or dead.
+This branch is separate from the Marv and Shane games and has not replaced the public website. No Unreal installation is needed.

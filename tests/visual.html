@@ -1,0 +1,8 @@
+<!doctype html><html><head><base href="/"><style>body{margin:0}#game{height:100vh}#tools{position:fixed;top:5px;left:5px;z-index:5;background:white;padding:12px;font:16px sans-serif}button{padding:10px}</style></head><body><div id="game"></div><div id="tools"><span id="status">Loading</span><button id="down">Knock down</button><button id="rise">Get up</button><button id="fight">Resume fight</button></div><script type="module">
+import {HiloGame} from '/lib/game.ts';
+const status=document.querySelector('#status');const game=new HiloGame(document.querySelector('#game'),s=>status.textContent=s,()=>{});await game.load();game.start();game.bub.root.position.set(0,0,-8);game.bub.root.rotation.y=Math.PI;game.enemies[0].root.position.set(0,0,-9.65);game.enemies[0].root.rotation.y=0;game.yaw=0;game.pitch=.2;game.paused=true;status.textContent='Bub and Ironclaw';
+const advance=n=>{game.paused=false;for(let i=0;i<n;i++)game.tick(.05);game.paused=true;status.textContent=game.enemies[0].current+' / HP '+game.enemies[0].health;};
+document.querySelector('#down').onclick=()=>{game.strikeType='kick';game.hit();game.hit();advance(40);};
+document.querySelector('#rise').onclick=()=>advance(35);
+document.querySelector('#fight').onclick=()=>advance(55);
+</script></body></html>

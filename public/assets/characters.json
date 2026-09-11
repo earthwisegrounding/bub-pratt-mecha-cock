@@ -1,0 +1,43 @@
+{
+  "bub": {
+    "clips": {
+      "walk": 0.967,
+      "run": 0.633,
+      "punch": 2.467,
+      "kick": 1.433,
+      "jump": 0.9,
+      "idle": 4.767,
+      "death": 3.5,
+      "dance1": 7.133,
+      "dance2": 8.067,
+      "dance3": 15.667,
+      "dance4": 16.0,
+      "dance5": 3.367,
+      "dance6": 4.733,
+      "dance7": 8.5
+    },
+    "meshes": [
+      {
+        "name": "Mesh_0",
+        "vertices": 20591
+      }
+    ]
+  },
+  "rooster": {
+    "clips": {
+      "walk": 0.967,
+      "run": 0.633,
+      "attack": 2.8,
+      "block": 1.7,
+      "death": 2.967,
+      "intro": 2.733,
+      "stumble": 2.267
+    },
+    "meshes": [
+      {
+        "name": "output_unwrapped",
+        "vertices": 37723
+      }
+    ]
+  }
+}
