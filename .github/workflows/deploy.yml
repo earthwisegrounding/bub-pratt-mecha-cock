@@ -1,4 +1,4 @@
-name: Publish Marv Reeves to GitHub Pages
+name: Publish Bub Pratt to GitHub Pages
 on:
   push:
     branches: [main]

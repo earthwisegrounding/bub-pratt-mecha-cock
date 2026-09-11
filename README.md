@@ -18,6 +18,10 @@ Controls: WASD/arrows move; Shift run; J punch; K kick; Space jump; drag to look
 - `npm run build`: TypeScript validation and static output in `dist/`.
 - `tests/visual.html`: local development-only animation inspection page. Not included in the production build.
 
-The source ZIPs were processed using `tools/process-bub.py` with Blender. This combines animations per character, removes horizontal root travel, and reduces textures/geometry for browsers. All 14 Bub clips and seven Ironclaw clips are preserved in the two bundled GLBs (about 4.8 MB combined). Original archives and music in Downloads are unchanged.
+The source ZIPs were processed using `tools/process-bub.py` with Blender. This combines animations per character, removes horizontal root travel, and reduces textures/geometry for browsers. All 15 Bub clips and seven Ironclaw clips are preserved in the two bundled GLBs (about 4.8 MB combined). Original archives and music in Downloads are unchanged.
 
-This branch is separate from the Marv and Shane games and has not replaced the public website. No Unreal installation is needed.
+GitHub Pages: https://earthwisegrounding.github.io/bub-pratt-mecha-cock/
+
+The GitHub Actions workflow tests and builds every push to main, then deploys the static game. The Marv and Shane games keep their own repositories and URLs. No Unreal installation is needed.
+
+Bub’s supplied Block6 reaction from `Meshy_AI_Meshy_Merged_Animations.glb` is imported as `hit`. It plays on nonfatal damage, fits the existing half-second reaction window, and yields to the separate death clip on a fatal hit. To reproduce extraction, run `python3 tools/extract-hit.py /path/to/Meshy_AI_Meshy_Merged_Animations.glb` before the Blender processing script.

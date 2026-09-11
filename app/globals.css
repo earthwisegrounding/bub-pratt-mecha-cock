@@ -45,3 +45,6 @@ h1{font-family:Impact,'Arial Narrow',sans-serif;font-size:clamp(66px,9vw,138px);
 .boss-track{height:6px;background:#233b3b;min-width:190px;margin:4px 0 9px}.boss-track div{height:100%;background:#f28663;transition:width .2s}.mission .eyebrow{max-width:230px}.mission strong{font-size:38px}.mission p{color:#f6ad86}
 @media(min-width:801px) and (min-height:601px) and (max-height:800px){.start-panel{top:15%}h1{font-size:min(9vw,12vh)}.controls-brief{margin-top:16px}}
 @media(max-width:800px){.boss-track{min-width:0;width:150px}.mission .eyebrow{max-width:150px}.mission strong{font-size:30px}.mission strong span{font-size:17px}.mission p{font-size:10px}}
+.start-button{position:relative;justify-content:center;text-align:center;padding-left:48px;padding-right:48px}.start-button>span{position:absolute;right:22px}
+.start-panel .start-button,.start-panel .healing-help,.start-panel .loading-status{width:100%;max-width:370px;text-align:center}
+@media(max-aspect-ratio:4/5){.start-panel .healing-help,.start-panel .loading-status{margin-left:auto;margin-right:auto}}

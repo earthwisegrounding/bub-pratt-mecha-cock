@@ -56,7 +56,7 @@ async function loadModel(name) {
   return model;
 }
 const templates = await Promise.all(["bub", "rooster"].map(loadModel));
-assert.equal(templates[0].animations.length, 14);
+assert.equal(templates[0].animations.length, 15);
 assert.equal(templates[1].animations.length, 7);
 // Canvas text needs no raster pixels for physics tests; the browser smoke test checks the real rendering.
 globalThis.document = {
@@ -267,7 +267,7 @@ for (const [w, h] of [
   );
 }
 console.log(
-  "PASS: 14 Bub clips, seven title dances, seven rooster clips, Hilo collision/navigation, movement, giant boss body contact, dodge, damage, victory/replay, healing, and five title viewport sizes.",
+  "PASS: 15 Bub clips, seven title dances, seven rooster clips, Hilo collision/navigation, movement, giant boss body contact, dodge, damage, victory/replay, healing, and five title viewport sizes.",
 );
 
 // Two kicks knock the living boss down. It cannot attack while down or getting up.
@@ -291,3 +291,5 @@ assert(["walk", "attack"].includes(down.enemies[0].current));
 console.log(
   "PASS: two-kick knockdown, authored falling/get-up clips, no damage during recovery, and return to combat.",
 );
+
+const reaction=strike(1.65);assert.equal(reaction.bub.current,"hit");assert(reaction.bub.actions.hit.isRunning());assert.equal(reaction.lock,.55);for(let i=0;i<12;i++)reaction.tick(.05);assert.equal(reaction.bub.current,"walk");console.log("PASS: supplied damage reaction plays on impact and returns to movement.");

@@ -1,7 +1,7 @@
 import bpy,pathlib,json
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 OUT=ROOT/'public/assets'; OUT.mkdir(exist_ok=True)
-MAP={'bub': {'Walking': 'walk', 'Running': 'run', 'Punch_Combo': 'punch', 'Spartan_Kick': 'kick', 'Jump_Over_Obstacle_2': 'jump', 'Squat_Stance': 'idle', 'Fall_Dead_from_Abdominal_Injury': 'death', 'Boom_Dance': 'dance1', 'Bubble_Dance': 'dance2', 'Cherish_Pop_Dance': 'dance3', 'Denim_Pop_Dance': 'dance4', 'Hip_Hop_Dance_1': 'dance5', 'Hip_Hop_Dance_3': 'dance6', 'Superlove_Pop_Dance': 'dance7'}, 'rooster': {'Walking': 'walk', 'Running': 'run', 'Attack': 'attack', 'Block6': 'block', 'Dead': 'death', 'Stand_Up7': 'intro', 'falling_down': 'stumble'}}
+MAP={'bub': {'Walking': 'walk', 'Running': 'run', 'Punch_Combo': 'punch', 'Spartan_Kick': 'kick', 'Jump_Over_Obstacle_2': 'jump', 'Squat_Stance': 'idle', 'Block6': 'hit', 'Fall_Dead_from_Abdominal_Injury': 'death', 'Boom_Dance': 'dance1', 'Bubble_Dance': 'dance2', 'Cherish_Pop_Dance': 'dance3', 'Denim_Pop_Dance': 'dance4', 'Hip_Hop_Dance_1': 'dance5', 'Hip_Hop_Dance_3': 'dance6', 'Superlove_Pop_Dance': 'dance7'}, 'rooster': {'Walking': 'walk', 'Running': 'run', 'Attack': 'attack', 'Block6': 'block', 'Dead': 'death', 'Stand_Up7': 'intro', 'falling_down': 'stumble'}}
 report={}
 for character,clips in MAP.items():
  bpy.ops.wm.read_factory_settings(use_empty=True)
