@@ -48,3 +48,10 @@ h1{font-family:Impact,'Arial Narrow',sans-serif;font-size:clamp(66px,9vw,138px);
 .start-button{position:relative;justify-content:center;text-align:center;padding-left:48px;padding-right:48px}.start-button>span{position:absolute;right:22px}
 .start-panel .start-button,.start-panel .healing-help,.start-panel .loading-status{width:100%;max-width:370px;text-align:center}
 @media(max-aspect-ratio:4/5){.start-panel .healing-help,.start-panel .loading-status{margin-left:auto;margin-right:auto}}
+
+/* Agency credit: title screen only (lives in .start-panel, which unmounts when play starts). Bottom-right corner above the tagline on wide screens, in the panel flow on portrait phones. */
+.site-credit{position:fixed;z-index:1;right:max(32px,env(safe-area-inset-right));bottom:calc(max(18px,env(safe-area-inset-bottom)) + 30px);display:block;width:max-content;max-width:calc(100% - 64px);margin:0;font-size:11px;letter-spacing:.5px;color:#a3b3b0;text-decoration:none;text-shadow:0 1px 4px #071116;transition:color .2s}.site-credit img{display:inline-block;vertical-align:middle;width:53px;height:40px;margin-right:8px}.site-credit strong{color:#dfe6df;font-weight:700;transition:color .2s}.site-credit:hover,.site-credit:focus-visible{color:#d0dad6}.site-credit:hover strong,.site-credit:focus-visible strong{color:var(--primary)}.site-credit:focus-visible{outline:3px solid #fff;outline-offset:3px}
+@media(max-width:800px){.site-credit{right:max(18px,env(safe-area-inset-right))}}
+@media(max-height:600px) and (min-aspect-ratio:4/5){.site-credit{bottom:max(12px,env(safe-area-inset-bottom));right:max(20px,env(safe-area-inset-right))}}
+@media(max-aspect-ratio:4/5){.site-credit{position:static;margin:10px auto 0;max-width:100%}}
+@media(max-height:340px){.site-credit{display:none}}
